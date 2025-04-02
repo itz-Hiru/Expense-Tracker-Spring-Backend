@@ -8,6 +8,10 @@ import java.util.List;
 
 @Service
 public interface ExpenseService {
+
     Expense postExpense(ExpenseDTO expenseDTO);
+
     List<Expense> getAllExpenses();
+
+    Expense getExpenseById(Long id);
 }

@@ -3,11 +3,13 @@ package com.itzHiru.ExpenseTracker.services.expense;
 import com.itzHiru.ExpenseTracker.dto.ExpenseDTO;
 import com.itzHiru.ExpenseTracker.entity.Expense;
 import com.itzHiru.ExpenseTracker.repository.ExpenseRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +36,15 @@ public class ExpenseServiceImpl implements ExpenseService {
         return expenseRepository.findAll().stream()
                 .sorted(Comparator.comparing(Expense::getDate).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public Expense getExpenseById(Long id) {
+        Optional<Expense> optionalExpense = expenseRepository.findById(id);
+
+        if (optionalExpense.isPresent()) {
+            return optionalExpense.get();
+        } else {
+            throw new EntityNotFoundException("Expense with id " + id + " not found");
+        }
     }
 }

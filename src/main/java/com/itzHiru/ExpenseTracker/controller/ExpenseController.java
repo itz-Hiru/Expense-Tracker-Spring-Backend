@@ -3,6 +3,7 @@ package com.itzHiru.ExpenseTracker.controller;
 import com.itzHiru.ExpenseTracker.dto.ExpenseDTO;
 import com.itzHiru.ExpenseTracker.entity.Expense;
 import com.itzHiru.ExpenseTracker.services.expense.ExpenseService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,16 @@ public class ExpenseController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllExpenses() {
         return ResponseEntity.ok(expenseService.getAllExpenses());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getExpenseById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(expenseService.getExpenseById(id));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
     }
 }
