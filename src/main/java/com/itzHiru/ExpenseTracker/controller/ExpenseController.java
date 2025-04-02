@@ -27,6 +27,17 @@ public class ExpenseController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateExpense(@PathVariable Long id, @RequestBody ExpenseDTO dto) {
+        try {
+            return ResponseEntity.ok(expenseService.updateExpense(id, dto));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllExpenses() {
         return ResponseEntity.ok(expenseService.getAllExpenses());
