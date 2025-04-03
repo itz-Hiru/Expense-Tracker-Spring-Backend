@@ -26,4 +26,9 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllIncomes() {
+        return ResponseEntity.ok(incomeService.getAllIncomes());
+    }
 }
