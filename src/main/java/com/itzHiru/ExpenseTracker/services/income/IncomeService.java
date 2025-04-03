@@ -13,4 +13,6 @@ public interface IncomeService {
     Income updateIncome(Long id, IncomeDTO incomeDTO);
 
     List<IncomeDTO> getAllIncomes();
+
+    IncomeDTO getIncomeById(Long id);
 }

@@ -43,4 +43,15 @@ public class IncomeController {
     public ResponseEntity<?> getAllIncomes() {
         return ResponseEntity.ok(incomeService.getAllIncomes());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getIncomeById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(incomeService.getIncomeById(id));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
 }
