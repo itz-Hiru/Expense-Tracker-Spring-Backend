@@ -4,6 +4,7 @@ import ch.qos.logback.core.layout.EchoLayout;
 import com.itzHiru.ExpenseTracker.dto.IncomeDTO;
 import com.itzHiru.ExpenseTracker.entity.Income;
 import com.itzHiru.ExpenseTracker.services.income.IncomeService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,17 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdIncome);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateIncome(@PathVariable Long id, @RequestBody IncomeDTO incomeDTO) {
+        try {
+            return ResponseEntity.ok(incomeService.updateIncome(id, incomeDTO));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
 

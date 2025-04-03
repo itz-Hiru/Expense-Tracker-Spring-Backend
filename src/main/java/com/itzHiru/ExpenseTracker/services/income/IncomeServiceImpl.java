@@ -3,11 +3,13 @@ package com.itzHiru.ExpenseTracker.services.income;
 import com.itzHiru.ExpenseTracker.dto.IncomeDTO;
 import com.itzHiru.ExpenseTracker.entity.Income;
 import com.itzHiru.ExpenseTracker.repository.IncomeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,16 @@ public class IncomeServiceImpl implements IncomeService {
         income.setDate(incomeDTO.getDate());
 
         return incomeRepository.save(income);
+    }
+
+    public Income updateIncome(Long id, IncomeDTO incomeDTO) {
+        Optional<Income> optionalIncome = incomeRepository.findById(id);
+
+        if (optionalIncome.isPresent()) {
+            return saveOrUpdateIncome(optionalIncome.get(), incomeDTO);
+        } else {
+            throw new EntityNotFoundException("Income not found with id: " + id);
+        }
     }
 
     public List<IncomeDTO> getAllIncomes() {

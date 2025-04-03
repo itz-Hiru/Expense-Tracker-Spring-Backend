@@ -10,5 +10,7 @@ import java.util.List;
 public interface IncomeService {
     Income postIncome(IncomeDTO incomeDTO);
 
+    Income updateIncome(Long id, IncomeDTO incomeDTO);
+
     List<IncomeDTO> getAllIncomes();
 }
